@@ -89,6 +89,7 @@ class CustomerController extends Controller
  ```
 
  >How to send otp
+ 
 AuthOtpController file
 
  ```
