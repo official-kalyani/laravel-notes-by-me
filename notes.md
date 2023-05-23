@@ -1,4 +1,4 @@
->>How to login from different tables
+>How to login from different tables
 
 It will be in login method
 
