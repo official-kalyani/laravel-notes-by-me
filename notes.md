@@ -87,3 +87,5 @@ class CustomerController extends Controller
                 <li><a href="#">Login / Signup</a></li>
               @endif
  ```
+
+ >How to send otp
