@@ -88,9 +88,9 @@ class CustomerController extends Controller
               @endif
  ```
 
- >How to send otp
+ # How to send otp
 
- # AuthOtpController file
+ ### AuthOtpController file
 
  ```
  namespace App\Http\Controllers;
@@ -196,7 +196,7 @@ class AuthOtpController extends Controller
     }
 }
 ```
-VerificationCode.php (model)
+### VerificationCode.php (model)
 ```
 <?php
 
