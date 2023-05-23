@@ -249,6 +249,7 @@ class VerificationCode extends Model
 ```
 ### view pages
 > /home/projectssecurecl/public_html/laravel-sms-demo/resources/views/auth/otp-login.blade.php
+```
 @extends('layouts.app')
 
 @section('content')
@@ -304,3 +305,4 @@ class VerificationCode extends Model
     </div>
 </div>
 @endsection
+```
