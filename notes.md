@@ -72,8 +72,7 @@ class CustomerController extends Controller
         }
         $services = Category::where('type', '=', 'service')->get();
         $products = Category::where('type', '=', 'product')->get();
-        return view('customer.homepage',compact('services','products','customerName')); 
-        // return view('layouts.frontend_layout.layouts.master'); 
+        return view('customer.homepage',compact('services','products','customerName'));
      }
 }
 ```
