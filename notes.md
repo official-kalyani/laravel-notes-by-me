@@ -58,3 +58,22 @@ In config\auth.php
         
     ],
 ```
+
+In the customer controller
+```
+class CustomerController extends Controller
+{
+    public function home(){
+        if (Auth::guard('customer')->check()) {
+            $customerName = Auth::guard('customer')->user()->full_name;
+        } else {
+            // Customer is not logged in
+            $customerName = null;
+        }
+        $services = Category::where('type', '=', 'service')->get();
+        $products = Category::where('type', '=', 'product')->get();
+        return view('customer.homepage',compact('services','products','customerName')); 
+        // return view('layouts.frontend_layout.layouts.master'); 
+     }
+}
+```
