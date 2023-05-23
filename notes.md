@@ -77,3 +77,14 @@ class CustomerController extends Controller
      }
 }
 ```
+ And in Home page 
+ ```
+ @if($customerName)
+                <li>
+                {{ $customerName }} <i class="fa fa-user" aria-hidden="true"></i>
+                </li>
+                <li> <a  href="{{url('/logout')}}"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a></li>
+              @else
+                <li><a href="#">Login / Signup</a></li>
+              @endif
+ ```
