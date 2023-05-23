@@ -90,7 +90,7 @@ class CustomerController extends Controller
 
  >How to send otp
 
-###AuthOtpController file
+ # AuthOtpController file
 
  ```
  namespace App\Http\Controllers;
