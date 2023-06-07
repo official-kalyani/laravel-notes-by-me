@@ -484,6 +484,6 @@ To display the category name in a Blade view, assuming you have set up the relat
     </div>
 @endforeach
 ```
-In this example, assuming you have a variable $products containing a collection of products passed to the Blade view, the @foreach loop iterates over each product. Inside the loop, you can access the category name using the $product->category->name syntax, where category represents the relationship method defined in the Product model, and name represents the column name that holds the category name.
+> In this example, assuming you have a variable $products containing a collection of products passed to the Blade view, the @foreach loop iterates over each product. Inside the loop, you can access the category name using the $product->category->name syntax, where category represents the relationship method defined in the Product model, and name represents the column name that holds the category name.
 
-By using $product->category->name, you can display the category name for each product in your Blade view. Make sure to adjust the variable names and property names according to your specific code structure.
+> By using $product->category->name, you can display the category name for each product in your Blade view. Make sure to adjust the variable names and property names according to your specific code structure.
