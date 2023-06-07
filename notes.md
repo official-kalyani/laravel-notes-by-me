@@ -364,3 +364,7 @@ class VerificationCode extends Model
 </div>
 @endsection
 ```
+### How to create column using migration command
+```
+php artisan migrate --path='./database/migrations/2023_06_07_062102_add_price_to_table.php
+```
