@@ -368,3 +368,10 @@ class VerificationCode extends Model
 ```
 php artisan migrate --path='./database/migrations/2023_06_07_062102_add_price_to_table.php
 ```
+
+
+### How to restict numbers inline onkeypress
+```
+<input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+
+```
