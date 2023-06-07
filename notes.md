@@ -379,3 +379,39 @@ php artisan migrate --path='./database/migrations/2023_06_07_062102_add_price_to
 ```
 onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 46"
 ```
+
+### How to display dynamic accordion
+
+```
+@php
+                                    if($service_info->question)
+                                    {
+                                    $qa_arr = explode(',',$service_info->question);
+                                    $ans_arr = explode(',',$service_info->answer);
+                                    }
+                                @endphp
+                                <div id="main">
+                                    <div class="accordion" id="faq">
+                                    @if (count($qa_arr) > 0)
+                                @foreach ($qa_arr as $index => $qa)
+                                <div class="card">
+                                            <div class="card-header" id="faqhead{{ $index}}">
+                                                <a href="#" class="btn btn-header-link" data-toggle="collapse"
+                                                    data-target="#faq{{ $index}}" aria-expanded="true"
+                                                    aria-controls="faq{{ $index}}">{{ $qa }}</a>
+                                            </div>
+
+                                            <div id="faq{{ $index}}" class="collapse @if($index == 0) show @endif" aria-labelledby="faqhead{{ $index}}"
+                                                data-parent="#faq{{ $index}}">
+                                                <div class="card-body">
+                                                {{ $ans_arr[$index] }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                
+                                @endforeach
+                                @else
+                                <p>No questions available.</p>
+                                @endif
+                                        
+```
