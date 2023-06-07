@@ -375,3 +375,7 @@ php artisan migrate --path='./database/migrations/2023_06_07_062102_add_price_to
 <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
 
 ```
+### if you want to allow dot  and numeric only then code will be
+```
+onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 46"
+```
