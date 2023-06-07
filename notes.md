@@ -415,3 +415,75 @@ onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCod
                                 @endif
                                         
 ```
+### There are two tables product and category  product table is reference table for category table then what will be the relation between them in laravel 8
+
+In Laravel 8, you can define a relationship between the Product and Category tables using Eloquent ORM. Based on your description, it seems like a "one-to-many" relationship, where a category can have multiple products, but a product belongs to only one category.
+
+To establish this relationship, you can define the following methods in your respective Product and Category model classes:
+
+Product Model (Product.php):
+```
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Product extends Model
+{
+    // ...
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+}
+
+```
+Category Model (Category.php):
+
+```
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Category extends Model
+{
+    // ...
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+}
+```
+In the Product model, the category() method defines a belongsTo relationship, indicating that a product belongs to a category.
+
+In the Category model, the products() method defines a hasMany relationship, specifying that a category can have multiple products.
+
+Once you have defined these relationships, you can access them in your code. For example, to retrieve the category of a product or the products belonging to a category, you can use the following:
+```
+// Retrieve the category of a product
+$product = Product::find(1);
+$category = $product->category;
+
+// Retrieve the products belonging to a category
+$category = Category::find(1);
+$products = $category->products;
+```
+These examples assume that you have proper database migrations for both the products and categories tables with appropriate foreign key constraints.
+
+By utilizing these relationships, you can easily access related data between the Product and Category models in your Laravel application.
+
+how to dispaly the category name in blade view
+
+To display the category name in a Blade view, assuming you have set up the relationship between the Product and Category models as mentioned earlier, you can use the category relationship to access the category name. Here's an example:
+```
+@foreach ($products as $product)
+    <div>
+        <h3>Product: {{ $product->name }}</h3>
+        <p>Category: {{ $product->category->name }}</p>
+    </div>
+@endforeach
+```
+In this example, assuming you have a variable $products containing a collection of products passed to the Blade view, the @foreach loop iterates over each product. Inside the loop, you can access the category name using the $product->category->name syntax, where category represents the relationship method defined in the Product model, and name represents the column name that holds the category name.
+
+By using $product->category->name, you can display the category name for each product in your Blade view. Make sure to adjust the variable names and property names according to your specific code structure.
