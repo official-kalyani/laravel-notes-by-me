@@ -490,6 +490,7 @@ To display the category name in a Blade view, assuming you have set up the relat
 > By using $product->category->name, you can display the category name for each product in your Blade view. Make sure to adjust the variable names and property names according to your specific code structure.
 
 ##  Trick to find service count using categoryid 
+```
 @php 
 $parentCategories = \App\Models\Category::whereNull('parent_id')->pluck('id');
 $childCategories = \App\Models\Category::where('parent_id', $service->id)->pluck('id');
@@ -499,3 +500,4 @@ $count_ad = \App\Models\Service::whereIn('category_id', $childCategories)->count
 @endphp
 
 {{ $count_ad }}
+```
