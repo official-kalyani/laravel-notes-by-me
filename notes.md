@@ -476,6 +476,7 @@ By utilizing these relationships, you can easily access related data between the
 how to dispaly the category name in blade view
 
 To display the category name in a Blade view, assuming you have set up the relationship between the Product and Category models as mentioned earlier, you can use the category relationship to access the category name. Here's an example:
+
 ```
 @foreach ($products as $product)
     <div>
@@ -487,3 +488,14 @@ To display the category name in a Blade view, assuming you have set up the relat
 > In this example, assuming you have a variable $products containing a collection of products passed to the Blade view, the @foreach loop iterates over each product. Inside the loop, you can access the category name using the $product->category->name syntax, where category represents the relationship method defined in the Product model, and name represents the column name that holds the category name.
 
 > By using $product->category->name, you can display the category name for each product in your Blade view. Make sure to adjust the variable names and property names according to your specific code structure.
+
+##  Trick to find service count using categoryid 
+@php 
+$parentCategories = \App\Models\Category::whereNull('parent_id')->pluck('id');
+$childCategories = \App\Models\Category::where('parent_id', $service->id)->pluck('id');
+@endphp
+@php
+$count_ad = \App\Models\Service::whereIn('category_id', $childCategories)->count();
+@endphp
+
+{{ $count_ad }}
