@@ -509,7 +509,7 @@ $count_ad = \App\Models\Service::whereIn('category_id', $childCategories)->count
 ## Dependency Injection
 > Dependency injection is a design pattern commonly used in PHP to achieve loose coupling and improve the maintainability and testability of your code. In dependency injection, instead of creating objects directly within a class, you inject their dependencies from outside. This allows for easier modification, testing, and reusability of code. Here are some real-life examples of dependency injection in PHP:
 
-> 1.Constructor Injection:
+### 1.Constructor Injection:
 ```
 class OrderController {
     private $orderService;
@@ -530,7 +530,7 @@ $orderController = new OrderController($orderService);
 
 ```
 > In this example, the OrderController class depends on the OrderService class. Instead of creating an instance of OrderService within the OrderController, it is injected via the constructor. This way, the OrderController can work with any implementation of OrderService, making it more flexible and easier to test.
- > 2. Setter Injection:
+### 2. Setter Injection:
  ```
  class UserController {
     private $userService;
