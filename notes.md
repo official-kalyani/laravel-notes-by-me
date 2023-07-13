@@ -552,7 +552,7 @@ $userController->setUserService($userService);
  ```
  > In this example, the UserController class has a dependency on the UserService class. Instead of injecting the dependency through the constructor, it is set using a setter method (setUserService()). This approach allows for more flexibility in case you have optional dependencies or need to change the dependency at runtime.
 
- > 3. Interface Injection:
+ ### 3. Interface Injection:
   ```
   interface MailerInterface {
     public function sendMail($to, $subject, $body);
