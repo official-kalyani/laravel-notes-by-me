@@ -501,3 +501,86 @@ $count_ad = \App\Models\Service::whereIn('category_id', $childCategories)->count
 
 {{ $count_ad }}
 ```
+
+
+### Laravel commands
+> php artisan db:seed --class=AdminUserSeeder
+
+## Dependency Injection
+> Dependency injection is a design pattern commonly used in PHP to achieve loose coupling and improve the maintainability and testability of your code. In dependency injection, instead of creating objects directly within a class, you inject their dependencies from outside. This allows for easier modification, testing, and reusability of code. Here are some real-life examples of dependency injection in PHP:
+
+> 1.Constructor Injection:
+```
+class OrderController {
+    private $orderService;
+    
+    public function __construct(OrderService $orderService) {
+        $this->orderService = $orderService;
+    }
+    
+    public function placeOrder() {
+        // ...
+        $this->orderService->processOrder($order);
+        // ...
+    }
+}
+
+$orderService = new OrderService();
+$orderController = new OrderController($orderService);
+
+```
+> In this example, the OrderController class depends on the OrderService class. Instead of creating an instance of OrderService within the OrderController, it is injected via the constructor. This way, the OrderController can work with any implementation of OrderService, making it more flexible and easier to test.
+ > 2. Setter Injection:
+ ```
+ class UserController {
+    private $userService;
+    
+    public function setUserService(UserService $userService) {
+        $this->userService = $userService;
+    }
+    
+    public function registerUser() {
+        // ...
+        $this->userService->createUser($userData);
+        // ...
+    }
+}
+
+$userService = new UserService();
+$userController = new UserController();
+$userController->setUserService($userService);
+ ```
+ > In this example, the UserController class has a dependency on the UserService class. Instead of injecting the dependency through the constructor, it is set using a setter method (setUserService()). This approach allows for more flexibility in case you have optional dependencies or need to change the dependency at runtime.
+
+ > 3. Interface Injection:
+  ```
+  interface MailerInterface {
+    public function sendMail($to, $subject, $body);
+}
+
+class UserController {
+    private $mailer;
+    
+    public function setMailer(MailerInterface $mailer) {
+        $this->mailer = $mailer;
+    }
+    
+    public function sendWelcomeEmail(User $user) {
+        // ...
+        $this->mailer->sendMail($user->getEmail(), 'Welcome', '...');
+        // ...
+    }
+}
+
+class SmtpMailer implements MailerInterface {
+    public function sendMail($to, $subject, $body) {
+        // Implementation using SMTP
+    }
+}
+
+$smtpMailer = new SmtpMailer();
+$userController = new UserController();
+$userController->setMailer($smtpMailer);
+
+  ```
+  > In this example, the UserController depends on the MailerInterface rather than a specific implementation. The actual implementation, SmtpMailer, is injected through the setMailer() method. This allows for easy substitution of different mailer implementations (e.g., SmtpMailer, SendmailMailer) without modifying the UserController class.
