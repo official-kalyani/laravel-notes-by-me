@@ -584,3 +584,45 @@ $userController->setMailer($smtpMailer);
 
   ```
   > In this example, the UserController depends on the MailerInterface rather than a specific implementation. The actual implementation, SmtpMailer, is injected through the setMailer() method. This allows for easy substitution of different mailer implementations (e.g., SmtpMailer, SendmailMailer) without modifying the UserController class.
+
+# Laravel 9 Remove Public from URL using htaccess
+
+## Steps for Laravel 9 Remove Public from URL using htaccess:
+- Step 1: Rename File
+- Step 2: Update .htaccess
+- Step 3: Conclusion
+
+## Step 1: Rename File
+
+In first step it is very easy and you need to just rename file name. you have to rename server.php to index.php at your laravel root directory.
+> server.php
+    INTO
+    index.php
+
+## Step 2: Update .htaccess
+> First of all you have to copy .htaccess file and put it laravel root folder. You just copy .htaccess file from public folder and then update bellow code:
+
+### .htaccess
+```
+Options -MultiViews -Indexes
+RewriteEngine On
+# Handle Authorization Header
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+# Redirect Trailing Slashes If Not A Folder...
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} (.+)/$
+RewriteRule ^ %1 [L,R=301]
+# Handle Front Controller...
+RewriteCond %{REQUEST_URI} !(\.css|\.js|\.png|\.jpg|\.gif|robots\.txt)$ [NC]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(css|js|images)/(.*)$ public/$1/$2 [L,NC]
+```
+
+## Step 3: Conclusion
+> Today, We had learn Laravel 9 Remove Public from URL using htaccess. Hope this tutorial helped you with learning Laravel 9. If you have any question you can ask us at comment section below. If you like the tutorial please subscribe our YouTube Channel and follow us on social network Facebook and Instagram.
