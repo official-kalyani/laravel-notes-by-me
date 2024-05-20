@@ -625,4 +625,4 @@ RewriteRule ^(css|js|images)/(.*)$ public/$1/$2 [L,NC]
 ```
 
 ## Step 3: Conclusion
-> Today, We had learn Laravel 9 Remove Public from URL using htaccess. Hope this tutorial helped you with learning Laravel 9. If you have any question you can ask us at comment section below. If you like the tutorial please subscribe our YouTube Channel and follow us on social network Facebook and Instagram.
+> Today, We had learn Laravel 9 Remove Public from URL using htaccess. Hope this tutorial helped you with learning Laravel 9. If you have any question you can ask us at comment section below. If you like the tutorial please subscribe our [YouTube Channel] (https://www.youtube.com/channel/UCwIbFoGoht3Dom9Q1NkOS3A) and follow us on social network Facebook and Instagram.
