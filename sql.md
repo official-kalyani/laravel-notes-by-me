@@ -50,12 +50,12 @@ SELECT * from movies where imdb_rating>=6 and imdb_rating <=8;
 SELECT * from movies where imdb_rating BETWEEN 6 AND 8;
 
 ```
-- Select all movies whose release year can be 2018 or 2019 or 2022
- -- Approach1:
+1.Select all movies whose release year can be 2018 or 2019 or 2022
+ - Approach1:
  ```
  SELECT * from movies where release_year=2022 or release_year=2019 or release_year=2018;
  ```
- -- Approach2:
+ - Approach2:
 ```
 SELECT * from movies where release_year IN (2018,2019,2022);
 ```
