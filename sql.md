@@ -44,3 +44,9 @@ SELECT COUNT(*) from movies where industry="Hollywood";
 SELECT * from movies where imdb_rating>9;
 
 ```
+- Movies with rating between 6 and 8
+```
+SELECT * from movies where imdb_rating>=6 and imdb_rating <=8;
+	SELECT * from movies where imdb_rating BETWEEN 6 AND 8;
+
+```
