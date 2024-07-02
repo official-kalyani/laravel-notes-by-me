@@ -67,18 +67,18 @@ A functional component in React is a simple JavaScript function that returns JSX
 
 
 
-export default
+<ins> **export default** </ins>
 
 In JavaScript (and also in React), the export default syntax is used to export a single "default" value or function from a module. This allows you to import that value or function without using curly braces {} when importing it in another module.
 
 
 
-Creating Components in React
+<ins> **Creating Components in React** </ins>
 
 Create a new file for your component: Start by creating a new JavaScript or JSX file for your component. Let's say you want to create a basic functional component named MyComponent.
 
 
-
+```
 // MyComponent.js
 
 import React from 'react';
@@ -99,9 +99,9 @@ return (
 
 export default MyComponent;
 
-
-Use the component in another file: You can then use this component in another file by importing it:
-
+```
+**Use the component in another file:** You can then use this component in another file by importing it:
+```
 // App.js
 
 import React from 'react';
@@ -125,3 +125,4 @@ return (
 };
 
 export default App;
+```
