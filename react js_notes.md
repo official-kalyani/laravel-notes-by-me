@@ -24,7 +24,7 @@ Change into the newly created app directory using the following command:
 The createRoot function is part of React's Concurrent Mode API, introduced to enable smoother user experiences by allowing React to work on multiple tasks concurrently. It is used to create a root in the React tree where concurrent rendering can take place. Concurrent Mode is an experimental set of features in React that may undergo changes in future releases.
 
 
-
+```
 import React, { createRoot } from 'react';
 
 import ReactDOM from 'react-dom';
@@ -98,6 +98,7 @@ return (
 };
 
 export default MyComponent;
+```
 
 Use the component in another file: You can then use this component in another file by importing it:
 
