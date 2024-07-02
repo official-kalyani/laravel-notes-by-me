@@ -5,7 +5,7 @@
 
 ### Create React App
 
-### Create a new React app: Open your terminal and run the following command to create a new React app using Create React App without installing it globally:
+1. ** Create a new React app: ** Open your terminal and run the following command to create a new React app using Create React App without installing it globally:
 npx create-react-app your-app-name
 Replace "your-app-name" with the desired name for your React app.
 Navigate to the project directory: Change into the newly created app directory using the following command:
