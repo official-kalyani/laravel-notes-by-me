@@ -54,14 +54,14 @@ const App = () => (
 // Render the component within the root
 
 root.render(<App />);
-
-JSX
+```
+<ins> **JSX** </ins>
 
 JSX (JavaScript XML) is a syntax extension for JavaScript, commonly used with React to describe what the UI should look like. JSX provides a more concise and readable syntax for defining the structure of React components. It looks similar to XML or HTML but is actually a syntactic sugar for React.createElement calls.
 
 
 
-Functional Component
+<ins> **Functional Component** </ins>
 
 A functional component in React is a simple JavaScript function that returns JSX (JavaScript XML) to describe the structure of the UI. Functional components are often referred to as "stateless components" because they don't have internal state or lifecycle methods
 
@@ -98,7 +98,7 @@ return (
 };
 
 export default MyComponent;
-```
+
 
 Use the component in another file: You can then use this component in another file by importing it:
 
