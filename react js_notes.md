@@ -8,7 +8,7 @@
 1. **Create a new React app:** 
 Open your terminal and run the following command to create a new React app using Create React App without installing it globally:
 > npx create-react-app your-app-name
-Replace "your-app-name" with the desired name for your React app.
+> Replace "your-app-name" with the desired name for your React app.
 2. **Navigate to the project directory:** 
 Change into the newly created app directory using the following command:
 > cd your-app-name
@@ -16,7 +16,7 @@ Change into the newly created app directory using the following command:
 3. **Run the development server:**
  Start the development server to see your React app in action. Run the following command:
  > npm start
-This will start the development server and open your app in a new browser window.
+ > This will start the development server and open your app in a new browser window.
 
 
 createRoot Function
