@@ -136,7 +136,9 @@ SELECT
 	GROUP BY studio
 	ORDER BY movies_count DESC;
 	```
+
 >What is the average rating of movies per studio and also order them by average rating in descending format?
+
 ```
 SELECT 
 	   studio, 
@@ -147,7 +149,7 @@ SELECT
         order by avg_rating DESC;
 ```
 ### Module: HAVING Clause
--- Print all the years where more than 2 movies were released
+Print all the years where more than 2 movies were released
 
 
 
