@@ -69,7 +69,7 @@ SELECT * from movies where imdb_rating IS NULL;
 ```
 SELECT * from movies where imdb_rating IS NOT NULL;
 ```
--- Print all bollywood movies ordered by their imdb rating
+> Print all bollywood movies ordered by their imdb rating
 	```SELECT * 
         from movies WHERE industry = "bollywood"
         ORDER BY imdb_rating ASC;```
