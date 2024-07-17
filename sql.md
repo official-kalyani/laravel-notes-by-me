@@ -67,5 +67,8 @@ SELECT * from movies where imdb_rating BETWEEN 6 AND 8;
 ```
 SELECT * from movies where imdb_rating IS NULL;
 ```
+> All movies where imdb rating is available 
+```SELECT * from movies where imdb_rating IS NOT NULL;```
+
 
 
