@@ -68,7 +68,55 @@ SELECT * from movies where imdb_rating BETWEEN 6 AND 8;
 SELECT * from movies where imdb_rating IS NULL;
 ```
 > All movies where imdb rating is available 
-```SELECT * from movies where imdb_rating IS NOT NULL;```
+```
+SELECT * from movies where imdb_rating IS NOT NULL;
+```
+> Print all bollywood movies ordered by their imdb rating
+``` 
+SELECT *  from movies WHERE industry = "bollywood" ORDER BY imdb_rating ASC;
+```
+>Print first 5 bollywood movies with highest rating
+```
+SELECT *  from movies WHERE industry = "bollywood" ORDER BY imdb_rating DESC LIMIT 5;
+```
+>Select movies starting from second highest rating movie till next 5 movies for bollywood
+```
+SELECT * 
+        from movies WHERE industry = "bollywood"
+        ORDER BY imdb_rating DESC LIMIT 5 OFFSET 1;
+```
+### Module: Summary Analytics (COUNT, MAX, MIN, AVG, GROUP BY)
+>How many total movies do we have in our movies table?
+```
+SELECT COUNT(*) from movies;
+```
+>Select highest imdb rating for bollywood movies
+```
+SELECT MAX(imdb_rating) from movies where industry="Bollywood";
+```
+>Select lowest imdb rating for bollywood movies
+```
+SELECT MIN(imdb_rating) from movies where industry="Bollywood";
+```
+>Print average rating of Marvel Studios movies
+```
+SELECT AVG(imdb_rating) from movies where studio="Marvel Studios";
+SELECT ROUND(AVG(imdb_rating),2) from movies where studio="Marvel Studios";
+```
+>Print min, max, avg rating of Marvel Studios movies
+```
+SELECT 
+	MIN(imdb_rating) as min_rating, 
+	MAX(imdb_rating) as max_rating, 
+	ROUND(AVG(imdb_rating),2) as avg_rating
+FROM movies 
+WHERE studio="Marvel Studios";
+```
+
+
+
+
+
 
 
 
