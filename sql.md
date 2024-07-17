@@ -149,7 +149,7 @@ SELECT
         order by avg_rating DESC;
 ```
 ### Module: HAVING Clause
-Print all the years where more than 2 movies were released
+>Print all the years where more than 2 movies were released
 
 
 
