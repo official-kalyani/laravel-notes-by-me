@@ -42,4 +42,8 @@ SELECT COUNT(*) from movies where industry="Hollywood";
 ```
 ### Module: Retrieve data using numeric query (BETWEEN, IN, ORDER BY, LIMIT, OFFSET)
 -- Which movies had greater than 9 imdb rating?
-	```SELECT * from movies where imdb_rating>9;```
+
+	```
+	SELECT * from movies where imdb_rating>9;
+	
+	```
