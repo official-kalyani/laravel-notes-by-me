@@ -112,6 +112,48 @@ SELECT
 FROM movies 
 WHERE studio="Marvel Studios";
 ```
+>Print count of movies by industry
+```
+SELECT 
+           industry, count(industry) 
+        FROM movies
+        GROUP BY industry;
+```
+>Same thing but add average rating
+```
+SELECT 
+            industry, 
+            count(industry) as movie_count,
+            avg(imdb_rating) as avg_rating
+	FROM movies
+	GROUP BY industry;
+```
+>Count number of movies released by a given production studio
+```
+SELECT 
+	    studio, count(studio) as movies_count 
+        from movies WHERE studio != ''
+	GROUP BY studio
+	ORDER BY movies_count DESC;
+	```
+>What is the average rating of movies per studio and also order them by average rating in descending format?
+```
+SELECT 
+	   studio, 
+	   count(studio) as cnt, 
+	   round(avg(imdb_rating), 1) as avg_rating 
+	from movies WHERE studio != ''
+	GROUP BY studio
+        order by avg_rating DESC;
+```
+### Module: HAVING Clause
+-- Print all the years where more than 2 movies were released
+
+
+
+
+
+
 
 
 
