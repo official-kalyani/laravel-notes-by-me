@@ -68,4 +68,9 @@ SELECT * from movies where imdb_rating IS NULL;
 SELECT * from movies where imdb_rating IS NOT NULL;
 ```
 
+# Chapter:- SQL Basics: Data Retrieval - Single Table
+
+### Module: Retrieve data using text query(SELECT, WHERE, DISTINCT, LIKE)
+
+
 
