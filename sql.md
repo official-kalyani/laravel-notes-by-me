@@ -1,4 +1,6 @@
-# Sql Queries  
+# Chapter:- SQL Basics: Data Retrieval - Single Table
+### Module: Retrieve data using text query(SELECT, WHERE, DISTINCT, LIKE)
+
 > Simply print all the movies 
 ```
 	SELECT * from movies;
@@ -67,10 +69,11 @@ SELECT * from movies where imdb_rating IS NULL;
 ```
 SELECT * from movies where imdb_rating IS NOT NULL;
 ```
+-- Print all bollywood movies ordered by their imdb rating
+	```SELECT * 
+        from movies WHERE industry = "bollywood"
+        ORDER BY imdb_rating ASC;```
 
-# Chapter:- SQL Basics: Data Retrieval - Single Table
-
-### Module: Retrieve data using text query(SELECT, WHERE, DISTINCT, LIKE)
 
 
 
