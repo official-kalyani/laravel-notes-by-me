@@ -146,3 +146,33 @@ There are 2 important concepts used by which React handles creation of DOM,
 2. **Diffing Algorithm**
 
 >The diffing algorithm in React is a core mechanism responsible for efficiently updating the user interface by identifying the minimal set of changes needed to reconcile the Virtual DOM with the actual DOM. When a component's state changes, React re-renders the component and its children, generating a new Virtual DOM tree. The diffing algorithm then compares this new Virtual DOM tree with the previous one, recursively traversing both trees to identify any differences in their structure or content. By strategically analyzing the changes, such as additions, removals, or updates of elements, React determines the most efficient way to update the actual DOM. This process helps minimize unnecessary updates, optimizing performance and ensuring a responsive user experience in React applications.
+
+### JSX
+>JSX (JavaScript XML) is a syntax extension for JavaScript that looks similar to XML or HTML and is commonly used with React to describe the structure of UI components. JSX provides a more concise and readable syntax for defining the structure of React components compared to using plain JavaScript.
+
+Here's a basic example of JSX in a React component:
+```
+import React from 'react';
+
+const MyComponent = () => {
+
+const name = 'John';
+
+
+
+return (
+
+<div>
+
+<h1>Hello, {name}!</h1>
+
+<p>This is a JSX example in React.</p>
+
+</div>
+
+);
+
+};
+
+export default MyComponent;
+```
