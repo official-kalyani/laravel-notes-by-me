@@ -214,3 +214,33 @@ export default MyComponent;
 In this example, the variables name and age are JavaScript variables, and they are inserted into the JSX by enclosing them in curly braces. The resulting JSX will display the values of these variables when rendered.
 
 **Closing Tag in JSX**
+>In React, it is crucial to close tags properly because JSX follows the XML/HTML syntax rules. JSX is a syntactic sugar for React.createElement, and it enforces a strict XML/HTML-like syntax. Therefore, JSX elements must be properly closed, just like in HTML.
+
+```
+import React from 'react';
+
+
+
+const BuggyComponent = () => {
+
+return (
+
+<div>
+
+<h1>Buggy React Component</h1>
+
+{/* Incorrect: The <img> tag is not properly closed */}
+
+<img src="..." alt="A sample image">
+
+</div>
+
+);
+
+};
+
+
+
+export default BuggyComponent;
+```
+In the above example, you will likely encounter a syntax error during the compilation phase. The error occurs because the JSX syntax is not valid due to the unclosed <img> tag.
