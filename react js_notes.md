@@ -244,3 +244,129 @@ return (
 export default BuggyComponent;
 ```
 In the above example, you will likely encounter a syntax error during the compilation phase. The error occurs because the JSX syntax is not valid due to the unclosed <img> tag.
+
+### Functional Component
+>A functional component in React is a JavaScript function that takes props as an argument and returns JSX (JavaScript XML) to describe the UI. Functional components are also sometimes referred to as "stateless components" because they don't have internal state or lifecycle methods. With the introduction of Hooks in React, functional components can now manage state and have access to other features that were traditionally available only in class components.
+
+```
+import React from 'react';
+
+const FunctionalComponent = (props) => {
+
+return (
+
+<div>
+
+<h1>Hello, {props.name}!</h1>
+
+<p>This is a functional component in React.</p>
+
+</div>
+
+);
+
+};
+
+
+
+export default FunctionalComponent;
+```
+**Requirement of Functional Components**
+
+>Functional components in React are crucial for their simplicity, readability, and versatility, especially with the introduction of Hooks. They offer a concise way to define components, making code more maintainable and promoting functional programming principles. The absence of lifecycle methods by default makes them straightforward, and the addition of Hooks empowers functional components to manage state and side effects, eliminating the need for class components solely for these purposes. This paradigm shift simplifies testing, improves performance, and fosters a consistent coding style, contributing to a more streamlined and modular React codebase.
+
+**Styling in Components**
+
+>Styling in React components can be approached in various ways, depending on your project's requirements and personal preferences. Here are a few common methods for styling React components:
+
+
+
+>Inline Styles: You can apply styles directly to JSX elements using inline styles. Styles are defined as JavaScript objects and assigned using the style attribute. This method is useful for small-scale styling but may become cumbersome for larger projects.
+
+```
+const MyComponent = () => {
+
+const styles = {
+
+color: 'blue',
+
+fontSize: '16px',
+
+};
+
+return <div style={styles}>Styled content</div>;
+
+};
+```
+**CSS Stylesheets:**
+>You can create separate CSS files and import them into your components. This approach keeps styles separate from your component logic, promoting better organization. Use class names to apply styles to JSX elements.
+
+```
+.myComponent {
+
+color: blue;
+
+font-size: 16px;
+
+}
+
+
+
+// MyComponent.js
+
+import React from 'react';
+
+import './styles.css';
+
+
+
+const MyComponent = () => {
+
+return <div className="myComponent">Styled content</div>;
+
+};
+```
+**Props**
+>In React, "props" (short for properties) are a way to pass data from a parent component to a child component. They allow you to make your components dynamic and reusable by providing a mechanism for communication between different parts of your application.
+```
+// ParentComponent.js
+
+import React from 'react';
+
+import ChildComponent from './ChildComponent';
+
+
+
+const ParentComponent = () => {
+
+const message = "Hello from the parent component!";
+
+
+
+return <ChildComponent greeting={message} />;
+
+};
+
+
+
+export default ParentComponent;
+
+// ChildComponent.js
+
+import React from 'react';
+
+
+
+const ChildComponent = (props) => {
+
+return <p>{props.greeting}</p>;
+
+};
+
+
+
+export default ChildComponent;
+```
+>In this example, the ParentComponent passes the greeting prop to the ChildComponent. Props are accessed in the child component function through the props argument.
+>Props can be used to make components more dynamic and customizable. They are often used to pass data, event handlers, or configuration options from a parent to a child component. Additionally, props can be used to conditionally render content based on different values.
+
