@@ -176,3 +176,41 @@ return (
 
 export default MyComponent;
 ```
+**Embedding a JavaScript variable**
+>In JSX, you can embed JavaScript variables by wrapping them in curly braces {}. This allows you to dynamically insert values into your JSX code.
+
+Here's an example:
+```
+import React from 'react';
+
+
+
+const MyComponent = () => {
+
+const name = 'John';
+
+const age = 25;
+
+
+
+return (
+
+<div>
+
+<h1>Hello, {name}!</h1>
+
+<p>You are {age} years old.</p>
+
+</div>
+
+);
+
+};
+
+
+
+export default MyComponent;
+```
+In this example, the variables name and age are JavaScript variables, and they are inserted into the JSX by enclosing them in curly braces. The resulting JSX will display the values of these variables when rendered.
+
+**Closing Tag in JSX**
