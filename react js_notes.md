@@ -126,3 +126,7 @@ return (
 
 export default App;
 ```
+
+### Document Object Model ( DOM )
+
+DOM (Document Object Model) is a programming interface for web documents. It represents the structure of HTML or XML documents as a tree-like model where each node represents a part of the document. The DOM provides a way for programs to dynamically access and update the content, structure, and style of web pages.
