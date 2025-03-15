@@ -481,6 +481,7 @@ Modify app/Models/NaacSection.php:
 
 ```
 protected $fillable = ['title', 'iiqa_link', 'ssr_link', 'video_embed'];
+```
 
 3. Create a Controller
 
