@@ -519,5 +519,465 @@ public function update(Request $request)
 
 ### 4. Create an Admin Form
 Create resources/views/admin/naac/edit.blade.php:
+```
+@extends('layouts.admin')
+
+@section('content')
+<h2>Edit NAAC Section</h2>
+<form action="{{ route('naac.update') }}" method="POST">
+    @csrf
+    @method('PUT')
+
+    <div class="mb-3">
+        <label>Title</label>
+        <input type="text" name="title" value="{{ $naac->title ?? '' }}" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>IIQA Link</label>
+        <input type="url" name="iiqa_link" value="{{ $naac->iiqa_link ?? '' }}" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label>SSR Link</label>
+        <input type="url" name="ssr_link" value="{{ $naac->ssr_link ?? '' }}" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label>Video Embed Code</label>
+        <textarea name="video_embed" class="form-control">{{ $naac->video_embed ?? '' }}</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Update</button>
+</form>
+@endsection
+
+```
+### 5. Define Routes
+Modify routes/web.php:
+
+```
+use App\Http\Controllers\NaacSectionController;
+
+Route::get('/admin/naac/edit', [NaacSectionController::class, 'edit'])->name('naac.edit');
+Route::put('/admin/naac/update', [NaacSectionController::class, 'update'])->name('naac.update');
+```
+### 6. Display the Section on the Frontend
+Modify the frontend view resources/views/naac.blade.php:
+
+```
+@php
+$naac = App\Models\NaacSection::first();
+@endphp
+
+@if($naac)
+    <h2 class="text-center">{{ $naac->title }}</h2>
+    <div class="text-center">
+        <a href="{{ $naac->iiqa_link }}" class="btn btn-primary">IIQA</a>
+        <a href="{{ $naac->ssr_link }}" class="btn btn-primary">SSR</a>
+    </div>
+
+    @if($naac->video_embed)
+        <div class="text-center mt-3">
+            {!! $naac->video_embed !!}
+        </div>
+    @endif
+@endif
+```
+
+Final Steps
+Run php artisan serve
+Visit /admin/naac/edit to update the section
+The frontend will dynamically update the content
+
+If you want to manage multiple dynamic pages like NAAC (e.g., IQAC, Research, Admissions, etc.), you need a CMS-like system in your Laravel backend. Here’s how you can handle it:
+
+1. Create a Table for Dynamic Pages
+```
+php artisan make:migration create_pages_table --create=pages
+public function up()
+{
+    Schema::create('pages', function (Blueprint $table) {
+        $table->id();
+        $table->string('title');
+        $table->string('slug')->unique(); // For URL handling
+        $table->text('content')->nullable(); // Main content
+        $table->string('image')->nullable(); // Image URL (e.g., Director's image)
+        $table->string('email')->nullable();
+        $table->string('phone')->nullable();
+        $table->timestamps();
+    });
+}
+php artisan migrate
+
+```
+
+### 2. Create a Model
+
+```
+php artisan make:model Page
+protected $fillable = ['title', 'slug', 'content', 'image', 'email', 'phone'];
+
+```
+### 3. Create a Controller
+
+```
+php artisan make:controller PageController
+use App\Models\Page;
+use Illuminate\Http\Request;
+
+class PageController extends Controller
+{
+    public function index()
+    {
+        $pages = Page::all();
+        return view('admin.pages.index', compact('pages'));
+    }
+
+    public function create()
+    {
+        return view('admin.pages.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'slug' => 'required|unique:pages',
+            'content' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png',
+            'email' => 'nullable|email',
+            'phone' => 'nullable'
+        ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('uploads', 'public');
+        }
+
+        Page::create([
+            'title' => $request->title,
+            'slug' => $request->slug,
+            'content' => $request->content,
+            'image' => $imagePath,
+            'email' => $request->email,
+            'phone' => $request->phone
+        ]);
+
+        return redirect()->route('pages.index')->with('success', 'Page created successfully.');
+    }
+
+    public function edit($id)
+    {
+        $page = Page::findOrFail($id);
+        return view('admin.pages.edit', compact('page'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $page = Page::findOrFail($id);
+
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png',
+            'email' => 'nullable|email',
+            'phone' => 'nullable'
+        ]);
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('uploads', 'public');
+            $page->image = $imagePath;
+        }
+
+        $page->update($request->except('image'));
+
+        return redirect()->route('pages.index')->with('success', 'Page updated successfully.');
+    }
+
+    public function show($slug)
+    {
+        $page = Page::where('slug', $slug)->firstOrFail();
+        return view('pages.show', compact('page'));
+    }
+}
+```
+### 4. Define Routes
+Modify routes/web.php:
+
+```
+use App\Http\Controllers\PageController;
+
+Route::prefix('admin')->group(function () {
+    Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
+    Route::get('/pages/create', [PageController::class, 'create'])->name('pages.create');
+    Route::post('/pages/store', [PageController::class, 'store'])->name('pages.store');
+    Route::get('/pages/edit/{id}', [PageController::class, 'edit'])->name('pages.edit');
+    Route::put('/pages/update/{id}', [PageController::class, 'update'])->name('pages.update');
+});
+
+Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show');
+```
+
+### 5. Create an Admin Panel for Pages
+Admin Page List (resources/views/admin/pages/index.blade.php)
+
+```
+@extends('layouts.admin')
+
+@section('content')
+<h2>Manage Pages</h2>
+<a href="{{ route('pages.create') }}" class="btn btn-success">Add New Page</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Slug</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($pages as $page)
+        <tr>
+            <td>{{ $page->title }}</td>
+            <td>{{ $page->slug }}</td>
+            <td>
+                <a href="{{ route('pages.edit', $page->id) }}" class="btn btn-primary">Edit</a>
+                <a href="{{ route('pages.show', $page->slug) }}" class="btn btn-info">View</a>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+@endsection
+
+
+Create New Page (resources/views/admin/pages/create.blade.php)
+
+@extends('layouts.admin')
+
+@section('content')
+<h2>Create Page</h2>
+<form action="{{ route('pages.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+
+    <div class="mb-3">
+        <label>Title</label>
+        <input type="text" name="title" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Slug (Unique URL Identifier)</label>
+        <input type="text" name="slug" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Content</label>
+        <textarea name="content" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Image (Optional)</label>
+        <input type="file" name="image" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label>Email (Optional)</label>
+        <input type="email" name="email" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label>Phone (Optional)</label>
+        <input type="text" name="phone" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+@endsection
+
+
+6. Display the Dynamic Page on Frontend
+Create resources/views/pages/show.blade.php:
+
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <h2>{{ $page->title }}</h2>
+    <div>{!! $page->content !!}</div>
+
+    @if($page->image)
+        <img src="{{ asset('storage/' . $page->image) }}" alt="Page Image" class="img-fluid">
+    @endif
+
+    @if($page->email)
+        <p>Email: <a href="mailto:{{ $page->email }}">{{ $page->email }}</a></p>
+    @endif
+
+    @if($page->phone)
+        <p>Phone: {{ $page->phone }}</p>
+    @endif
+</div>
+@endsection
+
+```
+
+### Final Steps
+Run Laravel Server:
+php artisan serve
+Go to Admin Panel (/admin/pages) and create a new page (e.g., IQAC).
+View Dynamic Pages via /pages/iqac or /pages/naac.
+Now, any new page can be added and managed dynamically without coding! 🚀 Let me know if you need modifications. 🎯
+
+Yes! If you want to call the sidebar section inside the content area, you can modify the textarea to use a rich text editor like CKEditor or TinyMCE, which allows adding dynamic components like menus.
+
+Two Ways to Include Sidebar in Content:
+Hardcode Sidebar Inside the Page Template (Recommended)
+Use Shortcodes in Content for Sidebar (Dynamic)
+
+### 1. Hardcode Sidebar Inside the Page Template (Recommended)
+Modify resources/views/pages/show.blade.php to include the sidebar directly:
+```
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="row">
+        <!-- Sidebar Section -->
+        <div class="col-md-3">
+            @include('partials.sidebar')  {{-- Include sidebar here --}}
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <h2>{{ $page->title }}</h2>
+            <div>{!! $page->content !!}</div> {{-- Display content from DB --}}
+        </div>
+    </div>
+</div>
+@endsection
+
+ Now, every dynamic page will automatically include the sidebar.
+ ```
+ ### 2. Use Shortcodes in Content for Sidebar (Dynamic)
+
+ If you want to allow the admin to dynamically add the sidebar from the content editor, you can use shortcodes like [sidebar].
+
+Step 1: Modify PageController
+Edit show() in app/Http/Controllers/PageController.php:
+```
+public function show($slug)
+{
+    $page = Page::where('slug', $slug)->firstOrFail();
+
+    // Replace [sidebar] shortcode with actual sidebar view
+    $page->content = str_replace('[sidebar]', view('partials.sidebar')->render(), $page->content);
+
+    return view('pages.show', compact('page'));
+}
+```
+Now, if the admin adds [sidebar] inside the content editor, the sidebar will appear there dynamically.
+
+### Final Step: Use CKEditor for Rich Editing
+Modify resources/views/admin/pages/create.blade.php:
+
+```
+<div class="mb-3">
+    <label>Content</label>
+    <textarea id="editor" name="content" class="form-control"></textarea>
+</div>
+Then add CKEditor in the footer:
+
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor');
+</script>
+```
+ Now, the admin can easily insert [sidebar] dynamically inside the content! 🚀
+
+ Final Summary:
+✔️ If you always want a sidebar → Hardcode it in the page template.
+✔️ If you want the admin to insert the sidebar dynamically → Use [sidebar] shortcode.
+
+Would you like to customize the sidebar further? 😊
+
+### To allow the admin to dynamically insert the sidebar using a [sidebar] shortcode, follow these steps:
+
+Step 1: Modify PageController to Replace [sidebar]
+Edit app/Http/Controllers/PageController.php:
+
+```
+public function show($slug)
+{
+    $page = Page::where('slug', $slug)->firstOrFail();
+
+    // Replace [sidebar] shortcode with actual sidebar view
+    $sidebarHtml = view('partials.sidebar')->render();
+    $page->content = str_replace('[sidebar]', $sidebarHtml, $page->content);
+
+    return view('pages.show', compact('page'));
+}
+
+```
+Now, whenever [sidebar] appears in the database content, it will be replaced with the sidebar view dynamically.
+
+Step 2: Allow Admin to Insert [sidebar] in Content
+In your admin panel where the admin adds/edit pages:
+
+Modify resources/views/admin/pages/create.blade.php and edit.blade.php:
+
+```
+<div class="mb-3">
+    <label>Content</label>
+    <textarea id="editor" name="content" class="form-control">{{ old('content', $page->content ?? '') }}</textarea>
+</div>
+
+```
+Then, add CKEditor for a rich text editor:
+```
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor');
+</script>
+
+```
+Now, the admin can insert [sidebar] anywhere in the content.
+
+Step 3: Create the Sidebar Partial
+Create a sidebar file: resources/views/partials/sidebar.blade.php
+```
+<div class="sidebar">
+    <ul class="list-group">
+        <li class="list-group-item"><a href="#">Link 1</a></li>
+        <li class="list-group-item"><a href="#">Link 2</a></li>
+        <li class="list-group-item"><a href="#">Link 3</a></li>
+    </ul>
+</div>
+This is the sidebar that will replace [sidebar] in content.
+
+```
+Step 4: Display the Page with Sidebar
+Modify resources/views/pages/show.blade.php:
+```
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <h2>{{ $page->title }}</h2>
+    <div>{!! $page->content !!}</div> {{-- Content with sidebar replaced --}}
+</div>
+@endsection
+```
+Now, whenever the admin adds [sidebar] in the content, the sidebar will be displayed dynamically! 🎉
+
+Final Summary
+✔ Admin can insert [sidebar] in the content using CKEditor.
+✔ Laravel will replace [sidebar] with the actual sidebar HTML dynamically.
+✔ Pages will show the sidebar inside the content at the exact position where [sidebar] was inserted.
+
+Now, you can dynamically manage sidebars inside any page without hardcoding! 🚀 Let me know if you need modifications. 😊
+
+
 
 
