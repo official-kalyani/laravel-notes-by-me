@@ -235,3 +235,288 @@ protected $fillable = ['title', 'type', 'url', 'pdf_path'];
 ### Step 3: Modify Form for PDF Upload
 Modify menu/create.blade.php:
 
+```
+<form action="{{ route('menu.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <div class="mb-3">
+        <label>Title</label>
+        <input type="text" name="title" class="form-control" required>
+    </div>
+    
+    <div class="mb-3">
+        <label>Type</label>
+        <select name="type" id="menuType" class="form-control" required>
+            <option value="page">Page</option>
+            <option value="pdf">PDF</option>
+        </select>
+    </div>
+
+    <div class="mb-3" id="urlField">
+        <label>URL (For Page)</label>
+        <input type="text" name="url" class="form-control">
+    </div>
+
+    <div class="mb-3" id="pdfField" style="display: none;">
+        <label>Upload PDF</label>
+        <input type="file" name="pdf_file" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+
+<script>
+    document.getElementById("menuType").addEventListener("change", function () {
+        if (this.value === "pdf") {
+            document.getElementById("pdfField").style.display = "block";
+            document.getElementById("urlField").style.display = "none";
+        } else {
+            document.getElementById("pdfField").style.display = "none";
+            document.getElementById("urlField").style.display = "block";
+        }
+    });
+</script>
+
+```
+
+### Step 4: Modify Controller
+
+Modify MenuItemController.php:
+
+```
+use Illuminate\Support\Facades\Storage;
+
+public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required',
+        'type' => 'required|in:page,pdf',
+        'url' => 'nullable|required_if:type,page',
+        'pdf_file' => 'nullable|required_if:type,pdf|mimes:pdf|max:2048',
+    ]);
+
+    $pdfPath = null;
+    if ($request->hasFile('pdf_file')) {
+        $pdfPath = $request->file('pdf_file')->store('pdfs', 'public');
+    }
+
+    MenuItem::create([
+        'title' => $request->title,
+        'type' => $request->type,
+        'url' => $request->type == 'page' ? $request->url : null,
+        'pdf_path' => $pdfPath,
+    ]);
+
+    return redirect()->route('menu.index')->with('success', 'Menu item added successfully.');
+}
+
+
+```
+
+### Step 5: Update Sidebar to Show PDFs
+
+Modify layouts/app.blade.php:
+
+```
+@foreach(App\Models\MenuItem::all() as $item)
+<li>
+    @if($item->type == 'page')
+        <a href="{{ $item->url }}" target="_blank">{{ $item->title }}</a>
+    @else
+        <a href="{{ asset('storage/' . $item->pdf_path) }}" target="_blank">{{ $item->title }} (PDF)</a>
+    @endif
+</li>
+@endforeach
+
+```
+### 2. Dynamic Page Editor for Content Management
+Now, let’s allow admins to create dynamic pages.
+
+Step 1: Create a Page Model, Migration, and Controller
+```
+php artisan make:model Page -mcr
+```
+```
+Modify database/migrations/YYYY_MM_DD_create_pages_table.php:
+public function up()
+{
+    Schema::create('pages', function (Blueprint $table) {
+        $table->id();
+        $table->string('title');
+        $table->text('content');
+        $table->timestamps();
+    });
+}
+
+php artisan migrate
+```
+
+### Step 2: Update the Model
+Modify app/Models/Page.php:
+
+```
+protected $fillable = ['title', 'content'];
+
+```
+### Step 3: Implement Controller Logic
+Modify app/Http/Controllers/PageController.php:
+
+``` 
+use App\Models\Page;
+use Illuminate\Http\Request;
+
+public function index()
+{
+    $pages = Page::all();
+    return view('pages.index', compact('pages'));
+}
+
+public function create()
+{
+    return view('pages.create');
+}
+
+public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required',
+        'content' => 'required',
+    ]);
+
+    Page::create($request->all());
+
+    return redirect()->route('pages.index')->with('success', 'Page created successfully.');
+}
+
+public function show(Page $page)
+{
+    return view('pages.show', compact('page'));
+}
+
+```
+### Step 4: Install & Configure Rich Text Editor
+
+```
+composer require unisharp/laravel-ckeditor
+
+Modify menu/create.blade.php and pages/create.blade.php:
+
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('content');
+</script>
+
+Modify pages/create.blade.php:
+
+<form action="{{ route('pages.store') }}" method="POST">
+    @csrf
+    <div class="mb-3">
+        <label>Title</label>
+        <input type="text" name="title" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Content</label>
+        <textarea name="content" id="content" class="form-control" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+```
+### Step 5: Define Routes
+Modify routes/web.php:
+```
+use App\Http\Controllers\PageController;
+
+Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
+Route::get('/pages/create', [PageController::class, 'create'])->name('pages.create');
+Route::post('/pages/store', [PageController::class, 'store'])->name('pages.store');
+Route::get('/pages/{page}', [PageController::class, 'show'])->name('pages.show');
+
+Step 6: Link Pages to Sidebar
+Modify layouts/app.blade.php:
+
+@foreach(App\Models\Page::all() as $page)
+<li>
+    <a href="{{ route('pages.show', $page->id) }}">{{ $page->title }}</a>
+</li>
+@endforeach
+```
+Final Steps
+Run php artisan serve
+Visit /menu to manage menu items
+Visit /pages to create and view pages
+
+This section contains:
+
+Title: "NAAC"
+Two Links: "IIQA" and "SSR" with icons
+Video Embed: A YouTube video
+To manage this section dynamically in your Laravel CMS, follow these steps:
+### 1. Create a Table for Storing Section Content
+
+```
+php artisan make:migration create_naac_section_table --create=naac_section
+Modify the migration file:
+public function up()
+{
+    Schema::create('naac_section', function (Blueprint $table) {
+        $table->id();
+        $table->string('title');
+        $table->string('iiqa_link')->nullable();
+        $table->string('ssr_link')->nullable();
+        $table->text('video_embed')->nullable();
+        $table->timestamps();
+    });
+}
+
+php artisan migrate
+```
+### 2. Create a Model
+Run:
+
+```
+php artisan make:model NaacSection
+
+Modify app/Models/NaacSection.php:
+
+```
+protected $fillable = ['title', 'iiqa_link', 'ssr_link', 'video_embed'];
+
+3. Create a Controller
+
+php artisan make:controller NaacSectionController
+app/Http/Controllers/NaacSectionController.php:
+
+use App\Models\NaacSection;
+use Illuminate\Http\Request;
+
+public function edit()
+{
+    $naac = NaacSection::first();
+    return view('admin.naac.edit', compact('naac'));
+}
+
+public function update(Request $request)
+{
+    $request->validate([
+        'title' => 'required',
+        'iiqa_link' => 'nullable|url',
+        'ssr_link' => 'nullable|url',
+        'video_embed' => 'nullable',
+    ]);
+
+    $naac = NaacSection::first();
+    if (!$naac) {
+        $naac = new NaacSection();
+    }
+    $naac->update($request->all());
+
+    return redirect()->back()->with('success', 'NAAC section updated successfully.');
+}
+
+```
+
+### 4. Create an Admin Form
+Create resources/views/admin/naac/edit.blade.php:
+
+
