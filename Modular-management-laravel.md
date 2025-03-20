@@ -5,7 +5,7 @@ php artisan module:make FormSubmission
 
 ### Step 2: Create a Migration for Form Data
 ```
-php artisan module:make-migration create_form_submissions_table --module=FormSubmission
+php artisan module:make-migration create_form_submissions_table FormSubmission
 
 ```
 ```
@@ -39,7 +39,7 @@ php artisan module:migrate FormSubmission
 ###  Step 3: Create a Model for Form Submissions
 
 ```
-php artisan module:make-model FormSubmission --module=FormSubmission
+php artisan module:make-model FormSubmission FormSubmission
 
 Open Modules/FormSubmission/Entities/FormSubmission.php and define the model:
 
@@ -58,7 +58,7 @@ class FormSubmission extends Model {
 ### Step 4: Create a Controller
 
 ```
-php artisan module:make-controller FormSubmissionController --module=FormSubmission
+php artisan module:make-controller FormSubmissionController FormSubmission
 ```
 
 Modify Modules/FormSubmission/Http/Controllers/FormSubmissionController.php:
